@@ -7,13 +7,27 @@ class Magatzem {
 
     public void actualitzarEstat() {
         for (int i = 0; i < articles.length; i++) {
-            // NUEVO: Creamos una variable 'article' para leerlo más limpio
             Article article = articles[i];
 
-            // NUEVO: Si es el Martell de Thor, salta inmediatamente al siguiente artículo
+            // 1. Cas Llegendari: El Martell de Thor no fa absolutament res
             if (article.nom.equals("Martell de Thor (Llegendari)")) {
                 continue;
             }
+
+            // NUEVO: Cas Formatge Gidurat (Aislado y limpio)
+            if (article.nom.equals("Formatge Gidurat")) {
+                article.diesPerVendre--; // Cada día baja el tiempo para vender
+
+                if (article.qualitat < 50) {
+                    article.qualitat++; // Sube 1 de calidad
+                }
+                // Si ya ha caducado, sube otro punto extra (el doble de rápido)
+                if (article.diesPerVendre < 0 && article.qualitat < 50) {
+                    article.qualitat++;
+                }
+                continue; // 🚀 ¡EXPULSIÓN! El queso se procesa aquí y salta al siguiente artículo
+            }
+
 
             if (!articles[i].nom.equals("Formatge Gidurat")
                     && !articles[i].nom.equals("Entrades per al Concert del Trobador")) {
