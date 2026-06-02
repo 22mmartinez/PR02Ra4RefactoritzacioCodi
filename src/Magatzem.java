@@ -9,25 +9,45 @@ class Magatzem {
         for (int i = 0; i < articles.length; i++) {
             Article article = articles[i];
 
-            // 1. Cas Llegendari: El Martell de Thor no fa absolutament res
+            // 1. Cas Llegendari
             if (article.nom.equals("Martell de Thor (Llegendari)")) {
                 continue;
             }
 
-            // NUEVO: Cas Formatge Gidurat (Aislado y limpio)
+            // 2. Cas Formatge Gidurat
             if (article.nom.equals("Formatge Gidurat")) {
-                article.diesPerVendre--; // Cada día baja el tiempo para vender
-
+                article.diesPerVendre--;
                 if (article.qualitat < 50) {
-                    article.qualitat++; // Sube 1 de calidad
+                    article.qualitat++;
                 }
-                // Si ya ha caducado, sube otro punto extra (el doble de rápido)
                 if (article.diesPerVendre < 0 && article.qualitat < 50) {
                     article.qualitat++;
                 }
-                continue; // 🚀 ¡EXPULSIÓN! El queso se procesa aquí y salta al siguiente artículo
+                continue;
             }
 
+            //  NUEVO: Cas Entrades per al Concert (Limpio y ordenado)
+            if (article.nom.equals("Entrades per al Concert del Trobador")) {
+                article.diesPerVendre--;
+
+                // Si el concierto ya ha pasado, la calidad cae a cero de golpe
+                if (article.diesPerVendre < 0) {
+                    article.qualitat = 0;
+                    continue; // 🚀 ¡EXPULSIÓN!
+                }
+
+                if (article.qualitat < 50) {
+                    article.qualitat++; // Subida estándar (+1) si quedan más de 10 días
+
+                    if (article.diesPerVendre < 10 && article.qualitat < 50) {
+                        article.qualitat++; // Entre 10 y 6 días (un punto extra, total +2)
+                    }
+                    if (article.diesPerVendre < 5 && article.qualitat < 50) {
+                        article.qualitat++; // 5 días o menos (otro punto extra, total +3)
+                    }
+                }
+                continue; // 🚀 ¡EXPULSIÓN!
+            }
 
             if (!articles[i].nom.equals("Formatge Gidurat")
                     && !articles[i].nom.equals("Entrades per al Concert del Trobador")) {
